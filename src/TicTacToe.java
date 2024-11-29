@@ -90,7 +90,7 @@ public class TicTacToe {
                 return;
             }
         }
-        //vertical bin ich zu faul für, mach doch selbst!
+        //vertical
         for(int r = 0; r < 3; r++) {
             if(board[0][r].getText() == "") continue;
 
@@ -103,7 +103,7 @@ public class TicTacToe {
                 return;
             }
         }
-        //diagonal
+        //diagonal bin ich zu faul für, mach doch selbst!
     }
     void setWinner(JButton tile) {
         tile.setForeground(Color.green);
