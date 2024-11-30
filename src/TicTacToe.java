@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class TicTacToe {
     int boardWidth = 600;
@@ -19,6 +18,7 @@ public class TicTacToe {
     String currentPlayer = playerX;
 
     boolean gameOver = false;
+    int turns = 0;
 
     TicTacToe() {
         frame.setVisible(true);
@@ -61,6 +61,7 @@ public class TicTacToe {
                         JButton tile = (JButton) e.getSource();
                         if(tile.getText() == "") {
                             tile.setText(currentPlayer);
+                            turns++;
                             checkWinner();
                             if(!gameOver) {
                                 /*Verwirrendes Zeug, was ich einfach so aus dem Internet kopiert hab :)
@@ -91,20 +92,61 @@ public class TicTacToe {
             }
         }
         //vertical
-        for(int r = 0; r < 3; r++) {
-            if(board[0][r].getText() == "") continue;
+        for(int c = 0; c < 3; c++) {
+            if(board[0][c].getText() == "") continue;
 
-            if(board[0][r].getText() == board[1][r].getText() &&
-               board[1][r].getText() == board[2][r].getText()) {
+            if(board[0][c].getText() == board[1][c].getText() &&
+               board[1][c].getText() == board[2][c].getText()) {
                 for(int i = 0; i < 3; i++) {
-                    setWinner(board[i][r]);
+                    setWinner(board[i][c]);
                 }
                 gameOver = true;
                 return;
             }
         }
-        //diagonal bin ich zu faul für, mach doch selbst!
+        //diagonal
+        if(board[0][0].getText() == board[1][1].getText() &&
+           board[1][1].getText() == board[2][2].getText() &&
+           board[0][0].getText() != "") {
+                for(int i = 0; i < 3; i++) {
+                    setWinner(board[i][i]);
+                }
+                gameOver = true;
+                return;
+
+        }
+        //anti-diagonal
+        if(board[0][2].getText() == board[1][1].getText() &&
+           board[1][1].getText() == board[2][0].getText() &&
+           board[0][2].getText() != "") {
+                int r = 0;
+                int c = 2;
+                while(r<3 && c>=0) {
+                    setWinner(board[r][c]);
+                    r++;
+                    c--;
+                }
+                gameOver = true;
+                return;
+
+        }
+        if(turns == 9) {
+            for(int r = 0; r < 3; r++) {
+                for (int c = 0; c < 3; c++) {
+                    setTie(board[r][c]);
+                }
+            }
+            gameOver = true;
+        }
+
     }
+
+    private void setTie(JButton tile) {
+        tile.setForeground(Color.yellow);
+        tile.setBackground(Color.gray);
+        textLabel.setText("Tie!");
+    }
+
     void setWinner(JButton tile) {
         tile.setForeground(Color.green);
         tile.setBackground(Color.gray);
